@@ -549,6 +549,7 @@ func hookHandler(w http.ResponseWriter, r *http.Request) {
 func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 	var errors []error
 
+	log.Print("Handling hook...")
 	// check the command exists
 	var lookpath string
 	if filepath.IsAbs(h.ExecuteCommand) || h.CommandWorkingDirectory == "" {
@@ -572,6 +573,8 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 
 	cmd := exec.Command(cmdPath)
 	cmd.Dir = h.CommandWorkingDirectory
+
+	log.Print("Building command...")
 
 	cmd.Args, errors = h.ExtractCommandArguments(r)
 	for _, err := range errors {
