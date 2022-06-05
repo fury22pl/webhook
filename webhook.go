@@ -550,9 +550,11 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 	var errors []error
 
 	log.Print("Handling hook...")
+	
+	// Parse all parameters at the beginning so we can access them.
+	cmd.Args, errors = h.ExtractCommandArguments(r)
+	
 	// check the command exists
-	//var scriptPath string
-	//scriptPath = strings.Fields(h.ExecuteCommand)[0]
 	var lookpath string
 	if filepath.IsAbs(h.ExecuteCommand) || h.CommandWorkingDirectory == "" {
 		lookpath = h.ExecuteCommand
@@ -561,7 +563,7 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 	}
 
 	log.Printf("Executing command path: %s", h.ExecuteCommand)
-	lookpath = "/var/plastic_scm/checkin_verify.sh"
+	//lookpath = "/var/plastic_scm/checkin_verify.sh"
 	log.Printf("Looking path: %s", lookpath)
 	cmdPath, err := exec.LookPath(lookpath)
 	log.Print("Checking errors...")
@@ -582,7 +584,6 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 
 	log.Print("Building command...")
 
-	cmd.Args, errors = h.ExtractCommandArguments(r)
 	for _, err := range errors {
 		log.Printf("[%s] error extracting command arguments: %s\n", r.ID, err)
 	}
