@@ -550,10 +550,8 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 	var errors []error
 
 	log.Print("Handling hook...")
-	
-	// Parse all parameters at the beginning so we can access them.
-	var cmdArgs[] string
-	cmdArgs, errors = h.ExtractCommandArguments(r)
+	log.Printf("ExecuteCommand=%s", h.ExecuteCommand)
+	log.Printf("CommandWorkingDirectory=%s", h.CommandWorkingDirectory)
 	
 	// check the command exists
 	var lookpath string
@@ -563,7 +561,8 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 		lookpath = filepath.Join(h.CommandWorkingDirectory, h.ExecuteCommand)
 	}
 
-	log.Printf("Executing command path: %s", h.ExecuteCommand)
+	log.Printf("ExecuteCommand=%s", h.ExecuteCommand)
+	log.Printf("CommandWorkingDirectory=%s", h.CommandWorkingDirectory)
 	//lookpath = "/var/plastic_scm/checkin_verify.sh"
 	log.Printf("Looking path: %s", lookpath)
 	cmdPath, err := exec.LookPath(lookpath)
@@ -582,10 +581,10 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 
 	cmd := exec.Command(cmdPath)
 	cmd.Dir = h.CommandWorkingDirectory
-	cmd.Args = cmdArgs
 
 	log.Print("Building command...")
 
+	cmd.Args, errors = h.ExtractCommandArguments(r)
 	for _, err := range errors {
 		log.Printf("[%s] error extracting command arguments: %s\n", r.ID, err)
 	}
