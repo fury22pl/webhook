@@ -552,14 +552,15 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 	log.Print("Handling hook...")
 	// check the command exists
 	var lookpath string
-	if filepath.IsAbs(h.ExecuteCommand) || h.CommandWorkingDirectory == "" {
-		lookpath = h.ExecuteCommand
+	if h.CommandWorkingDirectory == "" {
+		lookpath = h.ScriptPath
 	} else {
-		lookpath = filepath.Join(h.CommandWorkingDirectory, h.ExecuteCommand)
+		lookpath = filepath.Join(h.CommandWorkingDirectory, h.ScriptPath)
 	}
 
-	log.Printf("Executing command path: %s", h.ExecuteCommand)
-	lookpath = "/var/plastic_scm/checkin_verify.sh"
+	log.Printf("Executing command: %s", h.ExecuteCommand)
+	log.Printf("Script path: %s", h.ScriptPath)
+	// lookpath = "/var/plastic_scm/checkin_verify.sh"
 	log.Printf("Looking path: %s", lookpath)
 	cmdPath, err := exec.LookPath(lookpath)
 	log.Print("Checking errors...")
