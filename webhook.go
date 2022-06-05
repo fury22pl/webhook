@@ -552,7 +552,7 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 	log.Print("Handling hook...")
 	
 	// Parse all parameters at the beginning so we can access them.
-	cmd.Args, errors = h.ExtractCommandArguments(r)
+	cmdArgs, errors = h.ExtractCommandArguments(r)
 	
 	// check the command exists
 	var lookpath string
@@ -581,6 +581,7 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 
 	cmd := exec.Command(cmdPath)
 	cmd.Dir = h.CommandWorkingDirectory
+	cmd.Args = cmdArgs
 
 	log.Print("Building command...")
 
