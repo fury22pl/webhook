@@ -558,6 +558,7 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 		lookpath = filepath.Join(h.CommandWorkingDirectory, h.ExecuteCommand)
 	}
 
+	log.Printf("Executing command path: %s", h.ExecuteCommand)
 	lookpath = "/var/plastic_scm/checkin_verify.sh"
 	log.Printf("Looking path: %s", lookpath)
 	cmdPath, err := exec.LookPath(lookpath)
