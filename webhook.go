@@ -552,7 +552,7 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 	log.Print("Handling hook...")
 	// check the command exists
 	var scriptPath string
-	scriptPath = h.ExecuteCommand[0]
+	scriptPath = strings.Fields(h.ExecuteCommand)[0]
 	var lookpath string
 	if filepath.IsAbs(h.ExecuteCommand) || h.CommandWorkingDirectory == "" {
 		lookpath = h.ExecuteCommand
