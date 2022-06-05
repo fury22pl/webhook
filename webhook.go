@@ -558,7 +558,9 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 		lookpath = filepath.Join(h.CommandWorkingDirectory, h.ExecuteCommand)
 	}
 
+	log.Printf("Looking path: %s", lookpath)
 	cmdPath, err := exec.LookPath(lookpath)
+	log.Print("Checking errors...")
 	if err != nil {
 		log.Printf("[%s] error in %s", r.ID, err)
 
