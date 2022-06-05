@@ -552,6 +552,7 @@ func handleHook(h *hook.Hook, r *hook.Request) (string, error) {
 	log.Print("Handling hook...")
 	
 	// Parse all parameters at the beginning so we can access them.
+	var cmdArgs
 	cmdArgs, errors = h.ExtractCommandArguments(r)
 	
 	// check the command exists
